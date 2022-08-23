@@ -24,13 +24,14 @@ function Nav() {
                 {modeList.map((row, idx) => {
                     return (<a
                         key={idx}
-                        href={'/'+row}
+                        href={'/' + row}
                         title={row}
                         onClick={onClick}
                         className={`navItem ${mode === row && 'active'}`}
                     >{row}</a>)
                 })}
             </nav>
+            {/* List component에 'View', 'Add' mode 포함 */}
             <section>
                 {mode === 'Edit' ? <Edit /> : <List />}
             </section>

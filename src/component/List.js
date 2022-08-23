@@ -1,16 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import modeState from '../atom/modeState';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import API from '../modules/api';
-import todoListState from '../atom/todoListState';
 import Add from './Add';
 
 function List() {
 
     // 모드값 가져오기 (View, Add)
     const mode = useRecoilValue(modeState);
+
     // todoList
-    const [todoList, setTodoList] = useRecoilState(todoListState);
+    const [todoList, setTodoList] = useState([]);
 
     // 완료된 할 일 체크
     const isCheck = async ({ target: { id, checked } }) => {
@@ -57,7 +57,6 @@ function List() {
         onGetTodoList()
     }, []);
 
-
     return (
         <div className='listItems'>
             {todoList.map((row) => {
@@ -66,14 +65,14 @@ function List() {
                         {mode === 'View' && <input
                             type='checkbox'
                             id={row.rowKey}
-                            checked={row.isCheck === 'Y' ? true : false }
+                            checked={row.isCheck === 'Y' ? true : false}
                             onChange={isCheck} />}
                         <div style={{
                             display: 'inline-block',
-                            textDecoration: row.isCheck === 'Y'
+                            textDecoration: row.isCheck === 'Y' && mode === 'View'
                                 ? 'line-through'
                                 : 'none',
-                            color: row.isCheck === 'Y'
+                            color: row.isCheck === 'Y' && mode === 'View'
                                 ? 'gray'
                                 : 'black'
                         }}>{row.text}</div>
