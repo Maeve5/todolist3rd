@@ -58,6 +58,7 @@ function Edit() {
     };
 
     const onSave = async () => {
+
         // 수정할 데이터 배열
         const editData = todoList.filter(row =>
             !oldTodoList.some(old =>
@@ -72,17 +73,15 @@ function Edit() {
             )
         );
         
-        try {
-            editData.map((row) => {
-                const editResponse = await API.patch('/todo/' + row.rowKey, {
-                    text: row.text
-                });
-                console.log(editResponse);
-            })
-        }
-        catch (error) {
-            console.log(error);    
-        }
+        // try {
+        //     const editResponse = await API.post('/todo'), {
+        //         "deletes" : editData
+        //     };
+        //         console.log(editResponse);
+        // }
+        // catch (error) {
+        //     console.log(error);    
+        // }
 
 
     };
