@@ -1,9 +1,10 @@
 import API from "./api";
 
-async function onGetTodoList(todoList) {
+async function onGetTodoList() {
     try {
-        const getResponse = await API.get('/todo');
-            todoList = getResponse.data.data;
+        const response = await API.get('/todo');
+        console.log('ongettodolist=',response);
+        return response.data.data;
     }
     catch (error) {
         console.log(error);

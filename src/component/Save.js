@@ -1,83 +1,62 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import API from '../modules/api';
-import onGetTodoList from '../modules/onGetTodoList';
 
 function Edit() {
 
     // 수정할 todoList
     const [todoList, setTodoList] = useState([]);
-
     // 비교군 todoList
     const [oldTodoList, setOldTodoList] = useState([]);
 
-    // 할 일 목록 조회
-    const getData = async () => {
+    // todoList 값 가져오기
+    const onGetTodoList = async () => {
         try {
-
-            // 데이터 가져오기
-            const getTodoList = await onGetTodoList();
-
-            // todoList값 변경
-            setTodoList(getTodoList);
-
-            // oldTodoList값 변경
-            setOldTodoList(getTodoList);
+            const getResponse = await API.get('/todo');
+            setTodoList(getResponse.data.data);
+            setOldTodoList(getResponse.data.data);
         }
-
         catch (error) {
             console.log(error);
         }
     };
 
-    // 목록 조회
     useEffect(() => {
-        getData()
+        onGetTodoList()
     }, []);
 
-    // 할 일 수정 함수
-    const onEdit = useCallback(({ target: { id, value } }) => {
-
+    // 입력값 수정 이벤트 함수
+    const onEdit = useCallback (({ target: { id, value } }) => {
         const editList = JSON.parse(JSON.stringify(todoList));
-        
-        // 수정 후 목록 
         editList.map((row) => {
             if (Number(id) === row.rowKey) {
                 return row.text = value;
             }
             return row;
         });
-
-        // todoList 변경 (화면 출력)
-        setTodoList(editList);
+        setTodoList(editList); // todoList에 저장
     }, [todoList]);
 
-    // 할 일 삭제 함수
-    const onDelete = useCallback(({ target: { id } }) => {
-
-        const deleteList = JSON.parse(JSON.stringify(todoList))
-        
-        // 삭제 후 목록
-        deleteList.filter((row) => {
+    // 아이템 삭제 이벤트 함수
+    const onDelete = useCallback (({ target: { id } }) => {
+        const deleteList = JSON.parse(JSON.stringify(todoList)).filter((row) => {
             return (
                 Number(id) !== row.rowKey
             );
         });
-
-        // todoList 변경 (화면 출력)
-        setTodoList(deleteList);
+        setTodoList(deleteList); // todoList에 저장
     }, [todoList]);
 
-    // 저장 함수
+    // 저장 버튼
     const onSave = async () => {
 
-        // 수정 요청할 데이터 배열
+        // 수정할 데이터 배열
         const editData = todoList.filter(row =>
             !oldTodoList.some(old =>
                 old.rowKey === row.rowKey && old.text === row.text
             )
         );
 
-        // 삭제 요청할 데이터 배열
+        // 삭제할 데이터 배열
         const deleteData = oldTodoList.filter(old =>
             !todoList.some(row =>
                 old.rowKey === row.rowKey
@@ -88,30 +67,26 @@ function Edit() {
 
             let check = true;
 
-            // 데이터 수정 요청
+            // 데이터 수정
             editData.map(async (row) => {
-                const response = await API.patch('/todo/' + row.rowKey, {
+                const editdata = await API.patch('/todo/' + row.rowKey, {
                     text: row.text
                 });
-
-                console.log('editData=', response);
-
-                
-                if (response.data.message !== 'SUCCESS') {
+                console.log('editdata=',editdata);
+                // editdata.data.message !== 'SUCCESS' && check = false
+                if (editdata.data.message !== 'SUCCESS') {
                     check = false;
                 }
             })
 
             check === false ? alert('실패') : alert('저장')
 
-            // 데이터 삭제 요청
+            // 데이터 삭제
             deleteData.map(async (row) => {
-                const response = await API.delete('/todo/' + row.rowKey);
-
-                console.log('deleteData=', response);
+                const deletedata = await API.delete('/todo/' + row.rowKey);
+                console.log('deletedata=',deletedata);
             });
         }
-        
         catch (error) {
             console.log(error);
         }

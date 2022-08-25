@@ -16,7 +16,7 @@ function Nav() {
     const onClick = (e) => {
         e.preventDefault();
         setMode(e.target.title);
-    }
+    };
 
     return (
         <>
@@ -31,12 +31,12 @@ function Nav() {
                     >{row}</a>)
                 })}
             </nav>
-            {/* List component에 'View', 'Add' mode 포함 */}
             <section>
                 {mode === 'Edit' ? <Edit /> : <List />}
             </section>
         </>
     );
+    // List component에 'View', 'Add' mode 포함
 };
 
-export default Nav;
+export default React.memo(Nav);

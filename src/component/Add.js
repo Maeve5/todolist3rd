@@ -1,36 +1,50 @@
 import React, { useRef, useState } from 'react';
 import API from '../modules/api';
-// import onGetTodoList from '../modules/onGetTodoList';
 
-function Add({onGetTodoList}) {
+function Add({ setAddFlag }) {
 
+    // 할 일
     const [todo, setTodo] = useState('');
+
+    // 지정 element 속성 변경
     const input = useRef(null);
 
+    // 입력값 state 변경
     const onChange = (e) => {
         setTodo(e.target.value);
     };
 
     // 할 일 추가 함수
     const onAdd = async () => {
+
         // 입력값이 없을 때
-        if (!todo) {
-            alert('할 일을 입력하세요.');
-        }
+        !todo && alert('할 일을 입력하세요.');
+
         // 입력값이 있을 때
         try {
 
-            // 할 일 등록
-            await API.post('/todo', {
+            // 변경 전 flag값 변경
+            setAddFlag(false);
+
+            // 데이터 등록 요청
+            const response = await API.post('/todo', {
                 text: todo,
             });
-            onGetTodoList();
 
-            // 입력값 초기화
-            setTodo('');
+            console.log('onAdd=', response);
 
-            // 자동 포커스
-            input.current.focus();
+            // 요청 성공 시
+            if (response.data.message === 'SUCCESS') {
+
+                // 변경된 목록 조회
+                setAddFlag(true);
+
+                // 입력값 초기화
+                setTodo('');
+
+                // 자동 포커스
+                input.current.focus();
+            }
         }
         catch (error) {
             console.log(error);
@@ -51,4 +65,4 @@ function Add({onGetTodoList}) {
     );
 };
 
-export default Add;
+export default React.memo(Add);
