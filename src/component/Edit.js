@@ -15,7 +15,6 @@ function Edit() {
             const getResponse = await API.get('/todo');
             setTodoList(getResponse.data.data);
             setOldTodoList(getResponse.data.data);
-            console.log(getResponse);
         }
         catch (error) {
             console.log(error);
@@ -72,16 +71,42 @@ function Edit() {
                 old.rowKey === row.rowKey
             )
         );
-        
-        // try {
-        //     const editResponse = await API.post('/todo'), {
-        //         "deletes" : editData
-        //     };
-        //         console.log(editResponse);
-        // }
-        // catch (error) {
-        //     console.log(error);    
-        // }
+
+        try {
+
+            // for(let i=0; i < editData.length; i++) {
+            //     await API.patch('/todo/' + editData[i].rowKey, {
+            //         text : editData[i].text
+            //     });
+            // }
+
+            let check = true;
+
+            editData.map(async (row) => {
+                const response = await API.patch('/todo/' + row.rowKey, {
+                    text: row.text
+                });
+                if(response.data.message !== 'SUCCESS') {
+                    check = false;
+                }
+            })
+
+            if(check === false) {
+                alert('실패')
+            }
+            else {
+                alert('저장')
+            }
+
+            deleteData.map(async (row) => {
+                await API.delete('/todo/' + row.rowKey);
+            });
+
+
+        }
+        catch (error) {
+            console.log(error);
+        }
 
 
     };

@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import API from '../modules/api';
-import onGetTodoList from '../modules/onGetTodoList';
+// import onGetTodoList from '../modules/onGetTodoList';
 
-function Add() {
+function Add({onGetTodoList}) {
 
     const [todo, setTodo] = useState('');
     const input = useRef(null);
@@ -21,7 +21,7 @@ function Add() {
         try {
 
             // 할 일 등록
-            const response = await API.post('/todo', {
+            await API.post('/todo', {
                 text: todo,
             });
             onGetTodoList();
@@ -31,7 +31,6 @@ function Add() {
 
             // 자동 포커스
             input.current.focus();
-            console.log(response);
         }
         catch (error) {
             console.log(error);

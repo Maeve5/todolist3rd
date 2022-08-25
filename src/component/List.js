@@ -15,11 +15,10 @@ function List() {
     // 완료된 할 일 체크
     const isCheck = async ({ target: { id, checked } }) => {
         try {
-            const checkResponse = await API.patch('/todo/' + id, {
+            await API.patch('/todo/' + id, {
                 isCheck: checked ? 'Y' : 'N',
             });
             onGetTodoList();
-            console.log(checkResponse);
         }
         catch (error) {
             console.log(error);
@@ -46,7 +45,6 @@ function List() {
         try {
             const getResponse = await API.get('/todo');
             setTodoList(getResponse.data.data);
-            console.log(getResponse);
         }
         catch (error) {
             console.log(error);
@@ -79,7 +77,7 @@ function List() {
                     </div>
                 )
             })}
-            {mode === 'Add' && <Add />}
+            {mode === 'Add' && <Add onGetTodoList={onGetTodoList} />}
         </div>
     );
 };
