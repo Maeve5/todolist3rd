@@ -1,22 +1,127 @@
 .App {
+  color: #242424;
+  margin: 100px auto;
+  width: 560px;
   text-align: center;
+  border: 1px solid #0093119c;
+  border-radius: 0.5rem;
+}
+
+header {
+  padding: 32px 0;
+  font-size: 30px;
+  font-weight: 700;
+  font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+nav {
+  display: flex;
+  justify-content: space-evenly;
+  background-color: #c7ead27f;
 }
 
 .navItem {
-  color: black;
+  display: block;
+  padding: 3px 50px;
+  color: #313131;
   text-decoration: none;
 }
 
-.navItem:not(:first-of-type) {
-  margin-left: 20px;
-}
-
 .navItem.active {
-  color: white;
-  background-color: rgb(133, 68, 194);
+  color: #242424;
+  font-weight: 600;
+  background-color: white;
+  border: 1px solid white;
 }
 
 .navItem:hover {
-  color: white;
-  background-color: rgb(133, 68, 194);
+  color: 531dab;
+  background-color: white;
+  border: 1px solid white;
+}
+
+
+section {
+  margin: 20px 0;
+}
+
+.listItems,
+.editItems {
+  width: 360px;
+  margin: auto;
+}
+
+.listItem {
+  margin: 10px 10px;
+  text-align: left;
+}
+
+.listItem input {
+  margin-right: 5px;
+}
+
+.listItem div {
+  width: 300px;
+  margin-left: 5px;
+  padding-left: 5px;
+  border-bottom: 1px solid rgba(0, 128, 0, 0.453);
+}
+
+.addItem {
+  padding-top: 10px;
+}
+
+.addItem input {
+  width: 300px;
+  border: none;
+  border-bottom: 1px solid green;
+  margin-right: 8px;
+  font-size: 15px;
+}
+
+.addItem input:focus,
+.editItem input:focus {
+  outline: none;
+}
+
+.addItem button {
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color:#242424;
+  font-size: 16px;
+  background-color: #c7ead27f;
+}
+
+.editItem {
+  margin: 10px 10px;
+  text-align: left;
+}
+
+.editItem input {
+  width: 300px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 128, 0, 0.453);
+  margin-right: 8px;
+  font-size: 15px;
+}
+
+.editItem button {
+  border: none;
+  cursor: pointer;
+  color: rgba(255, 0, 0, 0.898);
+  background-color: white;
+}
+
+.save {
+  margin-top: 10px;
+  border: none;
+  border-radius: 2rem;
+  height: 28px;
+  width: 60px;
+  background-color: #c7ead27f;
+  cursor: pointer;
+  font-size: 15px;
 }

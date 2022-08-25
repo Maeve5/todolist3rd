@@ -59,7 +59,7 @@ function List() {
         <div className='listItems'>
             {todoList.map((row) => {
                 return (
-                    <div key={row.rowKey}>
+                    <div key={row.rowKey} className='listItem'>
                         {mode === 'View' && <input
                             type='checkbox'
                             id={row.rowKey}

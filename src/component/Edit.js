@@ -56,6 +56,7 @@ function Edit() {
         // }
     };
 
+    // 저장 버튼
     const onSave = async () => {
 
         // 수정할 데이터 배열
@@ -82,40 +83,38 @@ function Edit() {
 
             let check = true;
 
+            // 데이터 수정
             editData.map(async (row) => {
                 const response = await API.patch('/todo/' + row.rowKey, {
                     text: row.text
                 });
-                if(response.data.message !== 'SUCCESS') {
+                if (response.data.message !== 'SUCCESS') {
                     check = false;
                 }
             })
 
-            if(check === false) {
+            if (check === false) {
                 alert('실패')
             }
             else {
                 alert('저장')
             }
 
+            // 데이터 삭제
             deleteData.map(async (row) => {
                 await API.delete('/todo/' + row.rowKey);
             });
-
-
         }
         catch (error) {
             console.log(error);
         }
-
-
     };
 
     return (
-        <div className='edit'>
+        <div className='editItems'>
             {todoList.map((row) => {
                 return (
-                    <div key={row.rowKey}>
+                    <div key={row.rowKey} className='editItem'>
                         <input
                             type='text'
                             placeholder='할 일을 입력하세요.'
@@ -130,7 +129,7 @@ function Edit() {
                     </div>
                 )
             })}
-            <button onClick={onSave}>Save</button>
+            <button className='save' onClick={onSave}>Save</button>
         </div>
     );
 };

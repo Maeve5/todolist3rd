@@ -38,7 +38,7 @@ function Add({onGetTodoList}) {
     };
 
     return (
-        <div>
+        <div className='addItem'>
             <input
                 type='text'
                 placeholder='할 일을 입력하세요.'
@@ -46,7 +46,7 @@ function Add({onGetTodoList}) {
                 onChange={onChange}
                 autoFocus
                 ref={input} />
-            <button onClick={onAdd}>Add</button>
+            <button onClick={onAdd}>+</button>
         </div>
     );
 };
