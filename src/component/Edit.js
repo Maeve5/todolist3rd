@@ -34,11 +34,12 @@ function Edit() {
         getData()
     }, []);
 
-    // 할 일 수정 함수
-    const onEdit = useCallback(({ target: { id, value } }) => {
+
+    // 할 일 수정 함수 (on blur = outfocus되면 데이터 api 저장)
+    const onChange = useCallback(({ target: { id, value } }) => {
 
         const editList = JSON.parse(JSON.stringify(todoList));
-        
+
         // 수정 후 목록 
         editList.map((row) => {
             if (Number(id) === row.rowKey) {
@@ -52,69 +53,60 @@ function Edit() {
     }, [todoList]);
 
     // 할 일 삭제 함수
-    const onDelete = useCallback(({ target: { id } }) => {
+    const onDelete = useCallback(async ({ target: { id } }) => {
+        try {
 
-        const deleteList = JSON.parse(JSON.stringify(todoList))
-        
-        // 삭제 후 목록
-        deleteList.filter((row) => {
-            return (
-                Number(id) !== row.rowKey
-            );
-        });
+            // 해당 할 일 삭제 요청
+            const response = await API.delete('/todo/' + id);
 
-        // todoList 변경 (화면 출력)
-        setTodoList(deleteList);
-    }, [todoList]);
+            console.log('onDelete=', response);
+
+            // 삭제 요청 성공 시
+            if (response.data.message === 'SUCCESS') {
+                alert('삭제되었습니다.');
+                getData();
+            }
+
+        }
+
+        // 삭제 요청 실패 시
+        catch (error) {
+            alert(error.message);
+            console.log(error);
+        }
+    }, []);
 
     // 저장 함수
-    const onSave = async () => {
+    const onEdit = () => {
 
-        // 수정 요청할 데이터 배열
+        // 수정 요청할 데이터 배열 (반복문 중첩 비효율)
         const editData = todoList.filter(row =>
-            !oldTodoList.some(old =>
+           !oldTodoList.some(old =>
                 old.rowKey === row.rowKey && old.text === row.text
             )
         );
 
-        // 삭제 요청할 데이터 배열
-        const deleteData = oldTodoList.filter(old =>
-            !todoList.some(row =>
-                old.rowKey === row.rowKey
-            )
-        );
-
-        try {
-
-            let check = true;
-
-            // 데이터 수정 요청
-            editData.map(async (row) => {
+        // 데이터 수정 요청
+        editData.forEach(async (row) => {
+            try {
                 const response = await API.patch('/todo/' + row.rowKey, {
                     text: row.text
                 });
 
                 console.log('editData=', response);
 
-                
-                if (response.data.message !== 'SUCCESS') {
-                    check = false;
+                // 수정 요청 성공 시
+                if (response.data.message === 'SUCCESS') {
+                    alert('저장되었습니다.');
                 }
-            })
+            }
 
-            check === false ? alert('실패') : alert('저장')
-
-            // 데이터 삭제 요청
-            deleteData.map(async (row) => {
-                const response = await API.delete('/todo/' + row.rowKey);
-
-                console.log('deleteData=', response);
-            });
-        }
-        
-        catch (error) {
-            console.log(error);
-        }
+            // 수정 요청 실패 시
+            catch (error) {
+                alert(error.message);
+                console.log(error);
+            }
+        });
     };
 
     return (
@@ -127,7 +119,7 @@ function Edit() {
                             placeholder='할 일을 입력하세요.'
                             id={row.rowKey}
                             value={row.text}
-                            onChange={onEdit}
+                            onChange={onChange}
                             autoComplete='off' />
                         <button
                             id={row.rowKey}
@@ -136,7 +128,7 @@ function Edit() {
                     </div>
                 )
             })}
-            <button className='save' onClick={onSave}>Save</button>
+            <button className='save' onClick={onEdit}>Save</button>
         </div>
     );
 };

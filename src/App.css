@@ -52,17 +52,16 @@ section {
 }
 
 .listItem {
-  margin: 10px 10px;
+  margin: 10px 15px 10px 8px;
   text-align: left;
 }
 
 .listItem input {
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
 .listItem div {
   width: 300px;
-  margin-left: 5px;
   padding-left: 5px;
   border-bottom: 1px solid rgba(0, 128, 0, 0.453);
 }
@@ -76,6 +75,7 @@ section {
   border: none;
   border-bottom: 1px solid green;
   margin-right: 8px;
+  padding-left: 5px;
   font-size: 15px;
 }
 
@@ -85,6 +85,7 @@ section {
 }
 
 .addItem button {
+  margin-left: 5px;
   width: 25px;
   height: 25px;
   border: none;
@@ -104,7 +105,8 @@ section {
   width: 300px;
   border: none;
   border-bottom: 1px solid rgba(0, 128, 0, 0.453);
-  margin-right: 8px;
+  margin-right: 4px;
+  padding-left: 5px;
   font-size: 15px;
 }
 

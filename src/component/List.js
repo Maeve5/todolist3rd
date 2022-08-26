@@ -17,7 +17,8 @@ function List() {
     const [addFlag, setAddFlag] = useState(true);
 
     // 완료된 할 일 체크
-    const isCheck = useCallback (async ({ target: { id, checked } }) => {
+    // 변수명 주의
+    const isCheck = useCallback(async ({ target: { id, checked } }) => {
         try {
 
             // 변경 전 flag값 변경
@@ -28,11 +29,11 @@ function List() {
                 isCheck: checked ? 'Y' : 'N',
             });
 
-            console.log('isCheck=',response);
+            console.log('isCheck=', response);
 
             // 요청 성공 시
             if (response.data.message === 'SUCCESS') {
-
+                
                 // 변경된 목록 조회
                 setAddFlag(true);
             }
@@ -63,7 +64,7 @@ function List() {
     useEffect(() => {
 
         // addFlag === true일 때 getData 함수 실행
-        if (addFlag) { 
+        if (addFlag) {
             getData();
         }
 

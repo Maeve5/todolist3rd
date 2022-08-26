@@ -17,9 +17,6 @@ function Add({ setAddFlag }) {
     // 할 일 추가 함수
     const onAdd = async () => {
 
-        // 입력값이 없을 때
-        !todo && alert('할 일을 입력하세요.');
-
         // 입력값이 있을 때
         try {
 
@@ -47,7 +44,14 @@ function Add({ setAddFlag }) {
             }
         }
         catch (error) {
-            console.log(error);
+
+            // 입력값이 없을 때
+            if (!todo) {
+                alert(error.response.data.message);
+            }
+            else {
+                console.log(error);
+            }
         }
     };
 
